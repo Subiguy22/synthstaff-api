@@ -1,0 +1,76 @@
+openapi: 3.1.0
+info:
+  title: Synthstaff API
+  version: 1.0.0
+  description: API to submit staffing requests and get AI-matched candidates.
+
+servers:
+  - url: https://synthstaff-api.onrender.com
+
+paths:
+  /api/v1/staffing-request:
+    post:
+      summary: Submit a new staffing request
+      operationId: submitStaffingRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [role_title, skills_required, urgency_level]
+              properties:
+                role_title:
+                  type: string
+                skills_required:
+                  type: array
+                  items:
+                    type: string
+                urgency_level:
+                  type: string
+                  enum: [low, medium, high, critical]
+                remote_allowed:
+                  type: boolean
+                additional_notes:
+                  type: string
+      responses:
+        '201':
+          description: Staffing request submitted
+
+  /api/v1/matched-candidates:
+    get:
+      summary: Retrieve matched candidate profiles
+      operationId: getMatchedCandidates
+      parameters:
+        - name: request_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Matched candidates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  candidates:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        candidate_id:
+                          type: string
+                        name:
+                          type: string
+                        skills:
+                          type: array
+                          items:
+                            type: string
+                        experience_years:
+                          type: number
+                        availability:
+                          type: string
+                        rating:
+                          type: number
