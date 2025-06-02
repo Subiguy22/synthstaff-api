@@ -73,5 +73,5 @@ app.get('/api/v1/analytics/insights', (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 Synthstaff API running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
