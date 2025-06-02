@@ -5,11 +5,20 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Serve static files
+// Middleware
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(bodyParser.json());
-
+// Root route
 app.get('/', (req, res) => {
-  res.send('✅ Synthstaff API is live!');
+  res.send('🟢 Synthstaff API is running!');
+});
+
+// API test route
+app.get('/api/v1/ping', (req, res) => {
+  res.json({ message: 'pong' });
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server is running on port ${PORT}`);
 });
