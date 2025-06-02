@@ -1,17 +1,17 @@
 {
   "schema_version": "v1",
-  "name_for_human": "Synthstaff Plugin",
+  "name_for_human": "Synthstaff AI",
   "name_for_model": "synthstaff",
-  "description_for_human": "Customize and request AI employees with human-like personalities.",
-  "description_for_model": "Plugin for submitting staffing requests and retrieving matched AI candidates.",
+  "description_for_human": "AI staffing agent that matches roles with talent.",
+  "description_for_model": "Use this plugin to submit staffing requests and retrieve candidates or analytics.",
   "auth": {
     "type": "none"
   },
   "api": {
     "type": "openapi",
-    "url": "https://synthstaff-api.onrender.com/openapi.yaml"
+    "url": "https://synthstaff-api.onrender.com/public/openapi.yaml"
   },
-  "logo_url": "https://synthstaff-api.onrender.com/logo.png",
+  "logo_url": "https://synthstaff-api.onrender.com/public/Logo.png",
   "contact_email": "support@synthstaff.com",
-  "legal_info_url": "https://synthstaff.com/legal"
+  "legal_info_url": "https://synthstaff.com/privacy"
 }

@@ -1,21 +1,44 @@
 openapi: 3.0.1
 info:
   title: Synthstaff API
-  version: "1.0.0"
-  description: API for managing AI staffing requests and retrieving matched AI employees.
+  version: 1.0.0
+  description: |
+    Synthstaff is an AI-driven staffing platform that lets you submit staffing requests, 
+    get matched candidates, and retrieve workforce analytics.
+
 servers:
   - url: https://synthstaff-api.onrender.com
+
 paths:
+  /api/v1/ping:
+    get:
+      operationId: getApiStatus
+      summary: Health check
+      responses:
+        '200':
+          description: API is live
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
   /api/v1/staffing-request:
     post:
       operationId: submitStaffingRequest
-      summary: Submit a staffing request
+      summary: Submit a new staffing request
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
+              required:
+                - role_title
+                - skills_required
+                - urgency_level
               properties:
                 role_title:
                   type: string
@@ -25,6 +48,7 @@ paths:
                     type: string
                 urgency_level:
                   type: string
+                  enum: [low, medium, high, critical]
                 remote_allowed:
                   type: boolean
                 additional_notes:
@@ -32,43 +56,81 @@ paths:
       responses:
         '201':
           description: Staffing request received
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                  data:
-                    type: object
+    get:
+      operationId: getStaffingInfo
+      summary: Informational GET endpoint
+      responses:
+        '200':
+          description: Use POST to submit requests
+
   /api/v1/matched-candidates:
     get:
       operationId: getMatchedCandidates
-      summary: Get matched candidates by request ID
+      summary: Retrieve matched candidates
       parameters:
         - in: query
           name: request_id
+          required: true
           schema:
             type: string
-          required: true
       responses:
         '200':
-          description: A list of matched candidates
+          description: List of matched candidates
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
+                  request_id:
                     type: string
                   candidates:
                     type: array
                     items:
                       type: object
                       properties:
+                        candidate_id:
+                          type: string
                         name:
                           type: string
                         skills:
                           type: array
                           items:
                             type: string
+                        experience_years:
+                          type: number
+                        availability:
+                          type: string
+                        rating:
+                          type: number
+
+  /api/v1/analytics/insights:
+    get:
+      operationId: getAnalytics
+      summary: Workforce analytics insights
+      parameters:
+        - in: query
+          name: timeframe
+          required: false
+          schema:
+            type: string
+            enum: [7d, 30d, 90d]
+      responses:
+        '200':
+          description: Analytics data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  top_roles:
+                    type: array
+                    items:
+                      type: string
+                  avg_hiring_time_days:
+                    type: number
+                  satisfaction_score:
+                    type: number
+                  suggestions:
+                    type: array
+                    items:
+                      type: string
