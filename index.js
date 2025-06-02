@@ -6,14 +6,15 @@ const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
-// Health check
+// ✅ Health Check
 app.get('/api/v1/ping', (req, res) => {
   res.status(200).json({ message: '✅ Synthstaff API is live!' });
 });
 
-// Submit staffing request
+// ✅ POST: Submit staffing request
 app.post('/api/v1/staffing-request', (req, res) => {
   const requestData = req.body;
+
   console.log('Received staffing request:', requestData);
 
   res.status(201).json({
@@ -22,7 +23,14 @@ app.post('/api/v1/staffing-request', (req, res) => {
   });
 });
 
-// Retrieve matched candidates
+// ✅ GET: Info endpoint for staffing request (optional)
+app.get('/api/v1/staffing-request', (req, res) => {
+  res.status(200).json({
+    message: '📮 Please use POST method to submit a staffing request.',
+  });
+});
+
+// ✅ GET: Matched candidates
 app.get('/api/v1/matched-candidates', (req, res) => {
   const requestId = req.query.request_id;
 
@@ -30,7 +38,6 @@ app.get('/api/v1/matched-candidates', (req, res) => {
     return res.status(400).json({ error: 'Missing request_id parameter' });
   }
 
-  // Mocked candidates
   const candidates = [
     {
       candidate_id: 'cand_123',
@@ -53,7 +60,7 @@ app.get('/api/v1/matched-candidates', (req, res) => {
   res.status(200).json({ request_id: requestId, candidates });
 });
 
-// Get analytics insights
+// ✅ GET: Analytics insights
 app.get('/api/v1/analytics/insights', (req, res) => {
   const { timeframe } = req.query;
 
@@ -71,7 +78,8 @@ app.get('/api/v1/analytics/insights', (req, res) => {
   res.status(200).json(data);
 });
 
-// Start server
+// ✅ Start the server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+
